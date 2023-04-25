@@ -32,6 +32,12 @@ int main(int argc, char **argv)
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servaddr.sin_port = htons(PORT);
 
+	int optval = 1;
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) {
+		printf("setsockopt failed...\n");
+		exit(-1);
+	}
+
 	if ((bind(sockfd, (struct sockaddr *) &servaddr,
 			   sizeof(servaddr))) != 0) {
 		printf("Socket bind failed...\n");

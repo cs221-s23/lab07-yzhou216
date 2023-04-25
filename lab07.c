@@ -24,8 +24,6 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	printf("socket creation success..\n");
-
 	bzero(&servaddr, sizeof(servaddr));
 
 	servaddr.sin_family = AF_INET;
@@ -44,14 +42,11 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	printf("Socket binding success...\n");
-
 	if ((listen(sockfd, 5)) != 0) {
 		printf("Listen failed...\n");
 		exit(-1);
 	}
 
-	printf("server listening...\n");
 	len = sizeof(cli);
 
 	connfd = accept(sockfd, (struct sockaddr *)&cli, &len);
@@ -60,8 +55,6 @@ int main(int argc, char **argv)
 		printf("Server accept failed...\n");
 		exit(-1);
 	}
-
-	printf("Server accept the client...\n");
 
 	char buf[MSG_BUF + 1];
 	memset(buf, 0, MSG_BUF + 1);

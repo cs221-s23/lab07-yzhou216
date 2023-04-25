@@ -36,8 +36,7 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	if ((bind(sockfd, (struct sockaddr *) &servaddr,
-			   sizeof(servaddr))) != 0) {
+	if ((bind(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)))) {
 		printf("Socket bind failed...\n");
 		exit(-1);
 	}

@@ -79,18 +79,15 @@ int main(int argc, char **argv)
 		char *msg;
 		if (!strncmp(buf, "PING", 4)) {
 			msg = "PONG\n";
-			int n = send(connfd, msg, strlen(msg), 0);
-			if (n < 0) {
+			if (send(connfd, msg, strlen(msg), 0) < 0) {
 				printf("Error writing to socket.\n");
 				exit(-1);
 			}
 		} else {
 			msg = "INVALID\n";
-			int n = send(connfd, msg, strlen(msg), 0);
-			if (n < 0) {
+			if (send(connfd, msg, strlen(msg), 0) < 0)
 				printf("Error writing to socket.\n");
-				exit(-1);
-			}
+			exit(-1);
 		}
 	}
 

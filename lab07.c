@@ -76,16 +76,21 @@ int main(int argc, char **argv)
 	} else {
 		buf[n] = '\0';
 		printf("Received message from client: %s\n", buf);
+		char *msg;
 		if (!strncmp(buf, "PING", 4)) {
-			const char* pong = "PONG\n";
-			int n = send(connfd, pong, strlen(pong), 0);
+			msg = "PONG\n";
+			int n = send(connfd, msg, strlen(msg), 0);
 			if (n < 0) {
 				printf("Error writing to socket.\n");
 				exit(-1);
 			}
 		} else {
-			printf("Unexpected message received from client.\n");
-			exit(-1);
+			msg = "INVALID\n";
+			int n = send(connfd, msg, strlen(msg), 0);
+			if (n < 0) {
+				printf("Error writing to socket.\n");
+				exit(-1);
+			}
 		}
 	}
 

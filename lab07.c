@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 # define PORT 8148
 # define MSG_BUF 1024
@@ -48,40 +49,46 @@ int main(int argc, char **argv)
 
 	len = sizeof(cli);
 
-	connfd = accept(sockfd, (struct sockaddr *)&cli, &len);
+	while (true) {
+		connfd = accept(sockfd, (struct sockaddr *)&cli, &len);
 
-	if (connfd < 0) {
-		printf("Server accept failed...\n");
-		exit(-1);
-	}
-
-	char buf[MSG_BUF + 1];
-	memset(buf, 0, MSG_BUF + 1);
-
-	int n = recv(connfd, buf, sizeof(buf), 0);
-	if (n < 0) {
-		printf("Error reading from socket...\n");
-		exit(-1);
-	} else if (n == 0) {
-		printf("Connection closed by client.\n");
-		exit(0);
-	} else {
-		buf[n] = '\0';
-		printf("Received message from client: %s\n", buf);
-		char *msg;
-		if (!strncmp(buf, "PING", 4)) {
-			msg = "PONG\n";
-			if (send(connfd, msg, strlen(msg), 0) < 0) {
-				printf("Error writing to socket.\n");
-				exit(-1);
-			}
-		} else {
-			msg = "INVALID\n";
-			if (send(connfd, msg, strlen(msg), 0) < 0)
-				printf("Error writing to socket.\n");
+		if (connfd < 0) {
+			printf("Server accept failed...\n");
 			exit(-1);
 		}
+
+		char buf[MSG_BUF + 1];
+		memset(buf, 0, MSG_BUF + 1);
+
+		int n = recv(connfd, buf, sizeof(buf), 0);
+		if (n < 0) {
+			printf("Error reading from socket...\n");
+			exit(-1);
+		} else if (n == 0) {
+			printf("Connection closed by client.\n");
+			exit(0);
+		} else {
+			buf[n] = '\0';
+			printf("Received message from client: %s\n", buf);
+			char *msg;
+			if (!strncmp(buf, "PING", 4)) {
+				msg = "PONG\n";
+				if (send(connfd, msg, strlen(msg), 0) < 0) {
+					printf("Error writing to socket.\n");
+					exit(-1);
+				}
+			} else {
+				msg = "INVALID\n";
+				if (send(connfd, msg, strlen(msg), 0) < 0)
+					printf("Error writing to socket.\n");
+				exit(-1);
+			}
+		}
+
+		close(connfd);
 	}
+
+	close(sockfd);
 
 	return 0;
 }

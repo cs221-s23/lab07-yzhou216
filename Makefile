@@ -1,6 +1,6 @@
 PROG = lab07
 OBJS = lab07.o
-TMP = $(PROG) $(OBJS)
+TMP = $(PROG) $(OBJS) *.tmp
 
 %.o: %.c
 	gcc -c -g -o $@ $<

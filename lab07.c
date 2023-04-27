@@ -1,11 +1,11 @@
-#include <stdio.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <netinet/in.h>
+#include <stdlib.h>
+#include <netdb.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 
 # define PORT 8148
